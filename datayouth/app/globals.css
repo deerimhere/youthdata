@@ -55,5 +55,174 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Mobile App Specific Styles */
+@layer utilities {
+  /* Safe area for mobile devices */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Touch-friendly interactions */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth scrolling for mobile */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  /* Hide scrollbars but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile-optimized shadows */
+  .mobile-shadow {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* App-like borders */
+  .app-border {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+  }
+}
+
+/* Mobile App Animations */
+@layer components {
+  .app-card {
+    @apply bg-white rounded-2xl shadow-sm border-0 transition-all duration-200;
+  }
+
+  .app-card:active {
+    @apply scale-[0.98];
+  }
+
+  .app-button {
+    @apply rounded-xl font-medium transition-all duration-200 touch-target;
+  }
+
+  .app-button:active {
+    @apply scale-95;
+  }
+
+  .tab-button {
+    @apply flex flex-col items-center py-2 px-3 rounded-xl transition-all duration-200 touch-target;
+  }
+
+  .tab-button.active {
+    @apply bg-blue-50 text-blue-600;
+  }
+
+  .tab-button:active {
+    @apply scale-95;
+  }
+
+  /* Status bar styles */
+  .status-bar {
+    height: env(safe-area-inset-top, 44px);
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  }
+
+  /* Bottom navigation safe area */
+  .bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* Typography for mobile */
+@layer base {
+  .mobile-title {
+    @apply text-lg font-bold leading-tight;
+  }
+
+  .mobile-subtitle {
+    @apply text-base font-semibold leading-snug;
+  }
+
+  .mobile-body {
+    @apply text-sm leading-relaxed;
+  }
+
+  .mobile-caption {
+    @apply text-xs text-gray-600;
+  }
+}
+
+/* Government app specific styles */
+@layer components {
+  .gov-header {
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg;
+  }
+
+  .gov-card {
+    @apply bg-white rounded-2xl shadow-sm border-0 p-4;
+  }
+
+  .gov-badge {
+    @apply inline-flex items-center px-2 py-1 rounded-full text-xs font-medium;
+  }
+
+  .gov-badge-primary {
+    @apply bg-blue-100 text-blue-800;
+  }
+
+  .gov-badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .gov-badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .gov-badge-danger {
+    @apply bg-red-100 text-red-800;
+  }
+}
+
+/* Accessibility improvements for mobile */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .app-card {
+    @apply border border-gray-300;
+  }
+
+  .app-button {
+    @apply border border-gray-400;
+  }
+}
+
+/* Dark mode support for mobile */
+@media (prefers-color-scheme: dark) {
+  .app-card {
+    @apply bg-gray-800 text-white;
+  }
+
+  .gov-header {
+    @apply bg-gradient-to-r from-blue-800 to-blue-900;
   }
 }

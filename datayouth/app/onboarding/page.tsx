@@ -217,7 +217,7 @@ export default function OnboardingPage() {
                   <SelectContent>
                     <SelectItem value="seoul-all">서울 전역</SelectItem>
                     <SelectItem value="seoul-gangnam">서울 강남/서초</SelectItem>
-                    <SelectItem value="seoul-mapo">서울 마포/영등포</Select>
+                    <SelectItem value="seoul-mapo">서울 마포/영등포</SelectItem>
                     <SelectItem value="gyeonggi">경기도</SelectItem>
                     <SelectItem value="incheon">인천</SelectItem>
                     <SelectItem value="workplace-nearby">직장 근처</SelectItem>

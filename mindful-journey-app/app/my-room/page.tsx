@@ -153,7 +153,7 @@ export default function MyRoomPage() {
 
       {/* Tabs */}
       <Tabs defaultValue="emotion" className="w-full">
-        <TabsList className="glass-card grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-2 bg-white/5 border-white/10">
+        <TabsList className="glass-card grid w-full grid-cols-2 lg:grid-cols-4 h-auto p-2 bg-transparent border border-white/10">
           {[
             { value: "emotion", icon: BarChart3, label: "능력치 현황", gradient: "from-pink-500 to-rose-500" },
             { value: "learning", icon: ListChecks, label: "학습 히스토리", gradient: "from-green-500 to-emerald-500" },
@@ -163,12 +163,28 @@ export default function MyRoomPage() {
             <TabsTrigger
               key={tab.value}
               value={tab.value}
-              className="py-3 px-4 data-[state=active]:bg-gradient-to-r data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
-              data-gradient={tab.gradient}
+              className={cn(
+                "py-3 px-4 rounded-xl transition-all duration-300 relative overflow-hidden",
+                "data-[state=active]:bg-white/10 data-[state=active]:backdrop-blur-sm",
+                "data-[state=active]:border data-[state=active]:border-white/20",
+                "data-[state=active]:shadow-lg hover:bg-white/5",
+              )}
             >
-              <tab.icon className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">{tab.label}</span>
-              <span className="sm:hidden">{tab.label.split(" ")[0]}</span>
+              <div className="flex items-center relative z-10">
+                <tab.icon className="h-4 w-4 mr-2" />
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.label.split(" ")[0]}</span>
+              </div>
+
+              {/* 활성 상태일 때 그라데이션 테두리 효과 */}
+              <div
+                className={cn(
+                  "absolute inset-0 opacity-0 data-[state=active]:opacity-100 transition-opacity duration-300",
+                  `bg-gradient-to-r ${tab.gradient} p-[1px] rounded-xl`,
+                )}
+              >
+                <div className="w-full h-full bg-background/80 backdrop-blur-sm rounded-[calc(0.75rem-1px)]"></div>
+              </div>
             </TabsTrigger>
           ))}
         </TabsList>

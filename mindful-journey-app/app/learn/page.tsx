@@ -5,17 +5,20 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { CheckCircle, HelpCircle, RefreshCw, Zap, BarChart, Play, Trophy, Star } from "lucide-react"
+import { CheckCircle, HelpCircle, RefreshCw, Zap, BarChart, Play, Trophy, Star, TrendingUp } from "lucide-react"
 import { getTodaysMission, missionIcons } from "@/lib/api/mock-data"
 import type { LearningMission } from "@/lib/types"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { useAbility } from "@/lib/contexts/ability-context"
 
 export default function LearnPage() {
   const [mission, setMission] = useState<LearningMission | null>(null)
   const [missionStatus, setMissionStatus] = useState<"idle" | "active" | "completed">("idle")
   const [showHelp, setShowHelp] = useState(false)
   const [progressValue, setProgressValue] = useState(0)
+  const [showAbilityGains, setShowAbilityGains] = useState(false)
+  const { updateAbility } = useAbility()
 
   useEffect(() => {
     setMission(getTodaysMission())
@@ -39,6 +42,14 @@ export default function LearnPage() {
   const completeMission = () => {
     setMissionStatus("completed")
     setProgressValue(100)
+    setShowAbilityGains(true)
+
+    // 능력치 업데이트
+    if (mission?.abilityRewards) {
+      Object.entries(mission.abilityRewards).forEach(([abilityName, increment]) => {
+        updateAbility(abilityName, increment)
+      })
+    }
   }
 
   const resetMission = () => {
@@ -46,6 +57,7 @@ export default function LearnPage() {
     setMissionStatus("idle")
     setShowHelp(false)
     setProgressValue(0)
+    setShowAbilityGains(false)
   }
 
   if (!mission) {
@@ -113,6 +125,23 @@ export default function LearnPage() {
               </div>
             </div>
 
+            {/* Ability Rewards Preview */}
+            {mission.abilityRewards && Object.keys(mission.abilityRewards).length > 0 && (
+              <div className="glass-card p-4 rounded-xl bg-gradient-to-r from-blue-500/10 to-cyan-500/10">
+                <div className="flex items-center mb-3">
+                  <TrendingUp className="h-5 w-5 text-blue-500 mr-2" />
+                  <span className="font-semibold text-blue-600 dark:text-blue-400">획득 가능한 능력치</span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(mission.abilityRewards).map(([ability, value]) => (
+                    <div key={ability} className="px-3 py-1 bg-blue-500/20 rounded-full text-sm font-medium">
+                      {ability} +{value}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Progress Bar */}
             {missionStatus === "active" && (
               <div className="space-y-3">
@@ -156,16 +185,28 @@ export default function LearnPage() {
                 <CheckCircle className="h-6 w-6 text-green-500" />
                 <AlertTitle className="text-green-600 dark:text-green-400 text-xl font-bold">🎉 미션 완료!</AlertTitle>
                 <AlertDescription className="text-green-600/80 dark:text-green-400/80 space-y-4">
-                  <p className="text-lg">정말 잘했어요! 오늘의 학습 기록이 저장되었어요. ({mission.reward})</p>
+                  <p className="text-lg">정말 잘했어요! 오늘의 학습 기록이 저장되었어요.</p>
 
-                  <div className="glass-card p-4 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/20">
-                    <h4 className="font-bold text-lg flex items-center mb-3">
-                      <BarChart className="h-5 w-5 mr-2" />
-                      나의 성장 그래프 ✨
-                    </h4>
-                    <div className="h-12 bg-gradient-to-r from-green-400 to-emerald-500 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg pulse-glow">
-                      능력치 UP! 🚀
+                  {/* Ability Gains Display */}
+                  {showAbilityGains && mission.abilityRewards && (
+                    <div className="glass-card p-4 rounded-xl bg-gradient-to-r from-green-500/20 to-emerald-500/20">
+                      <h4 className="font-bold text-lg flex items-center mb-3">
+                        <BarChart className="h-5 w-5 mr-2" />
+                        능력치 상승! ✨
+                      </h4>
+                      <div className="grid grid-cols-2 gap-2">
+                        {Object.entries(mission.abilityRewards).map(([ability, value]) => (
+                          <div key={ability} className="flex items-center justify-between p-2 bg-white/10 rounded-lg">
+                            <span className="font-medium">{ability}</span>
+                            <span className="text-green-400 font-bold">+{value}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
+                  )}
+
+                  <div className="text-center">
+                    <p className="text-sm">마이룸에서 업데이트된 능력치를 확인해보세요! 📊</p>
                   </div>
                 </AlertDescription>
               </Alert>

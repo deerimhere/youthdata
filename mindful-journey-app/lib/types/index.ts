@@ -29,6 +29,7 @@ export interface LearningMission {
   duration: string
   type: "video" | "tutorial" | "article"
   link?: string
+  abilityRewards: { [abilityName: string]: number } // 새로 추가
 }
 
 export interface Resource {

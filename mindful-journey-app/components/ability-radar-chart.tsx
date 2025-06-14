@@ -2,23 +2,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-
-interface AbilityData {
-  name: string
-  value: number
-  color: string
-}
-
-const abilityData: AbilityData[] = [
-  { name: "운동", value: 75, color: "#ef4444" },
-  { name: "공부", value: 85, color: "#3b82f6" },
-  { name: "창의성", value: 90, color: "#8b5cf6" },
-  { name: "소통", value: 70, color: "#10b981" },
-  { name: "집중력", value: 80, color: "#f59e0b" },
-  { name: "리더십", value: 65, color: "#ec4899" },
-]
+import { Button } from "@/components/ui/button"
+import { useAbility } from "@/lib/contexts/ability-context"
+import { RotateCcw } from "lucide-react"
 
 export default function AbilityRadarChart() {
+  const { abilities, resetAbilities } = useAbility()
+
   const centerX = 150
   const centerY = 150
   const radius = 100
@@ -48,7 +38,7 @@ export default function AbilityRadarChart() {
 
   // 능력치 다각형 경로 생성
   const abilityPath =
-    abilityData
+    abilities
       .map((ability, index) => {
         const point = getPoint(index, ability.value)
         return `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`
@@ -58,7 +48,18 @@ export default function AbilityRadarChart() {
   return (
     <Card className="glass-card border-0 shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold gradient-text text-center">내 능력치 현황</CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-2xl font-bold gradient-text">내 능력치 현황</CardTitle>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={resetAbilities}
+            className="glass-card border-white/20 hover:bg-white/10"
+          >
+            <RotateCcw className="h-4 w-4 mr-2" />
+            초기화
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="space-y-6">
         {/* SVG 레이더 차트 */}
@@ -68,7 +69,7 @@ export default function AbilityRadarChart() {
             {backgroundLevels.map((level, levelIndex) => (
               <polygon
                 key={levelIndex}
-                points={abilityData
+                points={abilities
                   .map((_, index) => {
                     const point = getBackgroundPoint(index, level)
                     return `${point.x},${point.y}`
@@ -81,7 +82,7 @@ export default function AbilityRadarChart() {
             ))}
 
             {/* 축선 */}
-            {abilityData.map((_, index) => {
+            {abilities.map((_, index) => {
               const endPoint = getBackgroundPoint(index, 100)
               return (
                 <line
@@ -100,7 +101,7 @@ export default function AbilityRadarChart() {
             <path d={abilityPath} fill="rgba(139, 92, 246, 0.2)" stroke="rgba(139, 92, 246, 0.8)" strokeWidth="2" />
 
             {/* 능력치 점들 */}
-            {abilityData.map((ability, index) => {
+            {abilities.map((ability, index) => {
               const point = getPoint(index, ability.value)
               return (
                 <circle
@@ -116,7 +117,7 @@ export default function AbilityRadarChart() {
             })}
 
             {/* 라벨 */}
-            {abilityData.map((ability, index) => {
+            {abilities.map((ability, index) => {
               const labelPoint = getBackgroundPoint(index, 115)
               return (
                 <text
@@ -137,7 +138,7 @@ export default function AbilityRadarChart() {
 
         {/* 능력치 상세 정보 */}
         <div className="grid grid-cols-2 gap-4">
-          {abilityData.map((ability, index) => (
+          {abilities.map((ability, index) => (
             <div key={index} className="glass-card p-4 rounded-xl">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-semibold">{ability.name}</span>
@@ -157,7 +158,7 @@ export default function AbilityRadarChart() {
         </div>
 
         <div className="text-center">
-          <p className="text-sm text-muted-foreground">��준한 활동을 통해 능력치를 향상시켜보세요! 📈</p>
+          <p className="text-sm text-muted-foreground">학습한 활동을 통해 능력치를 향상시켜보세요! 📈</p>
         </div>
       </CardContent>
     </Card>

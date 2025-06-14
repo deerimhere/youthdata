@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 262 83% 58%;
+    --radius: 1rem;
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-warm: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --gradient-cool: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 262 83% 58%;
+    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --gradient-warm: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --gradient-cool: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background: radial-gradient(ellipse at top, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(255, 105, 180, 0.1) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/5 dark:bg-black/5 border border-white/10 dark:border-white/5;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-slate-700 via-purple-700 to-slate-700 dark:from-slate-300 dark:via-purple-300 dark:to-slate-300 bg-clip-text text-transparent;
+  }
+
+  .floating-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+
+  .wave-text {
+    display: inline-block;
+    animation: wave 2s ease-in-out infinite;
+  }
+
+  .wave-text:nth-child(1) {
+    animation-delay: 0s;
+  }
+
+  .wave-text:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .wave-text:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  .emotion-card {
+    @apply relative overflow-hidden transition-all duration-500 ease-out;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .emotion-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  }
+
+  .emotion-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .emotion-card:hover::before {
+    left: 100%;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
+  }
+}
+
+/* 기존 애니메이션 키프레임 뒤에 파도 애니메이션 추가 */
+@keyframes wave {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0px);
+  }
+  30% {
+    transform: translateY(-10px);
+  }
+}

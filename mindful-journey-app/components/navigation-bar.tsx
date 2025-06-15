@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { Home, Search, BookOpen, Link2Icon, UserCircle, Menu, X } from "lucide-react"
+import { Home, Search, BookOpen, Link2Icon, UserCircle, Menu, X, Brain } from "lucide-react"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import { useState } from "react"
 
 const navItems = [
   { href: "/", label: "홈", icon: Home, gradient: "from-pink-500 to-rose-500" },
+  { href: "/survey", label: "설문", icon: Brain, gradient: "from-indigo-500 to-purple-500" },
   { href: "/explore", label: "탐색", icon: Search, gradient: "from-blue-500 to-cyan-500" },
   { href: "/learn", label: "학습", icon: BookOpen, gradient: "from-green-500 to-emerald-500" },
   { href: "/connect", label: "연결", icon: Link2Icon, gradient: "from-purple-500 to-violet-500" },

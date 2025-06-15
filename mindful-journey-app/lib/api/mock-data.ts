@@ -4,6 +4,7 @@ import type {
   JobSuggestion,
   Interest,
   LearningMission,
+  JobCurriculum,
   Resource,
   EmotionLog,
   LearningHistoryItem,
@@ -47,7 +48,7 @@ export const emotions: Emotion[] = [
     id: "sad",
     label: "슬퍼요",
     icon: Frown,
-    feedback: "오늘은 마음이 조금 무거웠군요. 그래도 여기까지 온 당신, 정말 잘했어요. 당신��� 감정을 존중해요. 🫂",
+    feedback: "오늘은 마음이 조금 무거웠군요. 그래도 여기까지 온 당신, 정말 잘했어요. 당신의 감정을 존중해요. 🫂",
     color: "text-blue-500",
   },
   {
@@ -140,6 +141,33 @@ export const learningMissions: LearningMission[] = [
     abilityRewards: { 집중력: 3, 창의성: 2 },
   },
   {
+    id: "video_editing_advanced",
+    title: "고급 영상편집 기법",
+    description: "컬러 그레이딩, 모션 그래픽 등 전문적인 편집 기법을 배워봅시다.",
+    reward: "경험치 +25, 집중력 +4, 창의성 +5",
+    duration: "30분",
+    type: "tutorial",
+    abilityRewards: { 집중력: 4, 창의성: 5 },
+  },
+  {
+    id: "design_fundamentals",
+    title: "디자인 기초 원리",
+    description: "색상, 타이포그래피, 레이아웃 등 디자인의 기본 원리를 학습합니다.",
+    reward: "경험치 +20, 창의성 +4, 공부 +2",
+    duration: "25분",
+    type: "article",
+    abilityRewards: { 창의성: 4, 공부: 2 },
+  },
+  {
+    id: "adobe_photoshop",
+    title: "포토샵 기초 마스터",
+    description: "포토샵의 기본 도구와 기능을 익혀 간단한 편집 작업을 할 수 있게 됩니다.",
+    reward: "경험치 +30, 창의성 +5, 집중력 +3",
+    duration: "40분",
+    type: "tutorial",
+    abilityRewards: { 창의성: 5, 집중력: 3 },
+  },
+  {
     id: "coding_intro_python",
     title: "파이썬 코딩 첫걸음",
     description: "파이썬의 기본 문법을 익히고, 간단한 프로그램을 작성해봅시다.",
@@ -186,10 +214,163 @@ export const learningMissions: LearningMission[] = [
     type: "video",
     abilityRewards: { 운동: 5, 집중력: 1 },
   },
+  {
+    id: "music_theory_basics",
+    title: "음악 이론 기초",
+    description: "음계, 화음, 리듬 등 음악의 기본 이론을 배워봅시다.",
+    reward: "경험치 +18, 창의성 +3, 공부 +3",
+    duration: "22분",
+    type: "tutorial",
+    abilityRewards: { 창의성: 3, 공부: 3 },
+  },
+  {
+    id: "audio_mixing",
+    title: "오디오 믹싱 입문",
+    description: "DAW를 사용한 기본적인 오디오 믹싱 기법을 익혀봅시다.",
+    reward: "경험치 +25, 창의성 +4, 집중력 +4",
+    duration: "35분",
+    type: "tutorial",
+    abilityRewards: { 창의성: 4, 집중력: 4 },
+  },
+]
+
+// 직업별 커리큘럼 데이터
+export const jobCurriculums: JobCurriculum[] = [
+  {
+    jobId: "video_editor",
+    jobTitle: "영상편집자",
+    description: "영상편집의 기초부터 고급 기법까지, 전문 영상편집자가 되기 위한 완전한 로드맵입니다.",
+    totalDuration: "8-12주",
+    difficulty: "중급",
+    requiredAbilities: { 집중력: 80, 창의성: 75 },
+    steps: [
+      {
+        id: "step1",
+        title: "1단계: 영상편집 기초",
+        description: "영상편집의 기본 개념과 도구 사용법을 익힙니다.",
+        estimatedDuration: "2-3주",
+        difficulty: "초급",
+        missions: [
+          learningMissions.find((m) => m.id === "video_editing_basics")!,
+          learningMissions.find((m) => m.id === "mindfulness_meditation")!,
+        ],
+      },
+      {
+        id: "step2",
+        title: "2단계: 고급 편집 기법",
+        description: "전문적인 편집 기법과 효과를 배웁니다.",
+        estimatedDuration: "3-4주",
+        difficulty: "중급",
+        prerequisites: ["step1"],
+        missions: [
+          learningMissions.find((m) => m.id === "video_editing_advanced")!,
+          learningMissions.find((m) => m.id === "creative_thinking")!,
+        ],
+      },
+      {
+        id: "step3",
+        title: "3단계: 포트폴리오 제작",
+        description: "실제 프로젝트를 통해 포트폴리오를 구성합니다.",
+        estimatedDuration: "3-5주",
+        difficulty: "고급",
+        prerequisites: ["step2"],
+        missions: [learningMissions.find((m) => m.id === "team_communication")!],
+      },
+    ],
+  },
+  {
+    jobId: "graphic_designer",
+    jobTitle: "그래픽 디자이너",
+    description: "시각 디자인의 기초부터 실무까지, 전문 그래픽 디자이너로 성장하는 커리큘럼입니다.",
+    totalDuration: "10-14주",
+    difficulty: "중급",
+    requiredAbilities: { 창의성: 85, 집중력: 70 },
+    steps: [
+      {
+        id: "step1",
+        title: "1단계: 디자인 기초 이론",
+        description: "디자인의 기본 원리와 이론을 학습합니다.",
+        estimatedDuration: "3-4주",
+        difficulty: "초급",
+        missions: [
+          learningMissions.find((m) => m.id === "design_fundamentals")!,
+          learningMissions.find((m) => m.id === "creative_thinking")!,
+        ],
+      },
+      {
+        id: "step2",
+        title: "2단계: 디자인 도구 마스터",
+        description: "포토샵, 일러스트레이터 등 전문 도구를 익힙니다.",
+        estimatedDuration: "4-5주",
+        difficulty: "중급",
+        prerequisites: ["step1"],
+        missions: [
+          learningMissions.find((m) => m.id === "adobe_photoshop")!,
+          learningMissions.find((m) => m.id === "mindfulness_meditation")!,
+        ],
+      },
+      {
+        id: "step3",
+        title: "3단계: 실무 프로젝트",
+        description: "실제 클라이언트 작업을 통해 실무 경험을 쌓습니다.",
+        estimatedDuration: "3-5주",
+        difficulty: "고급",
+        prerequisites: ["step2"],
+        missions: [learningMissions.find((m) => m.id === "team_communication")!],
+      },
+    ],
+  },
+  {
+    jobId: "sound_engineer",
+    jobTitle: "음향 엔지니어",
+    description: "음향 기술의 기초부터 전문 엔지니어링까지, 음향 분야의 전문가가 되는 과정입니다.",
+    totalDuration: "12-16주",
+    difficulty: "고급",
+    requiredAbilities: { 창의성: 80, 집중력: 85, 공부: 75 },
+    steps: [
+      {
+        id: "step1",
+        title: "1단계: 음향 기초 이론",
+        description: "음향학의 기본 원리와 음악 이론을 학습합니다.",
+        estimatedDuration: "4-5주",
+        difficulty: "초급",
+        missions: [
+          learningMissions.find((m) => m.id === "music_theory_basics")!,
+          learningMissions.find((m) => m.id === "mindfulness_meditation")!,
+        ],
+      },
+      {
+        id: "step2",
+        title: "2단계: 오디오 믹싱 & 마스터링",
+        description: "전문적인 오디오 처리 기법을 익힙니다.",
+        estimatedDuration: "4-6주",
+        difficulty: "중급",
+        prerequisites: ["step1"],
+        missions: [
+          learningMissions.find((m) => m.id === "audio_mixing")!,
+          learningMissions.find((m) => m.id === "creative_thinking")!,
+        ],
+      },
+      {
+        id: "step3",
+        title: "3단계: 스튜디오 실무",
+        description: "실제 스튜디오 환경에서의 작업 경험을 쌓습니다.",
+        estimatedDuration: "4-5주",
+        difficulty: "고급",
+        prerequisites: ["step2"],
+        missions: [learningMissions.find((m) => m.id === "team_communication")!],
+      },
+    ],
+  },
 ]
 
 export const getTodaysMission = (): LearningMission =>
   learningMissions[Math.floor(Math.random() * learningMissions.length)]
+
+export const getJobCurriculum = (jobId: string): JobCurriculum | undefined => {
+  return jobCurriculums.find((curriculum) => curriculum.jobId === jobId)
+}
+
 export const missionIcons: { [key in LearningMission["type"]]: React.ElementType } = {
   video: PlayCircle,
   tutorial: BookText,

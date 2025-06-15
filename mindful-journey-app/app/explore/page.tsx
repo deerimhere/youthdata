@@ -7,14 +7,20 @@ import { interests, getJobSuggestionsByInterest } from "@/lib/api/mock-data"
 import type { JobSuggestion, Interest } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { Sparkles, ArrowRight, Clock, Target } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function ExplorePage() {
   const [selectedInterest, setSelectedInterest] = useState<Interest | null>(null)
   const [suggestedJobs, setSuggestedJobs] = useState<JobSuggestion[]>([])
+  const router = useRouter()
 
   const handleInterestSelect = (interest: Interest) => {
     setSelectedInterest(interest)
     setSuggestedJobs(getJobSuggestionsByInterest(interest.id))
+  }
+
+  const handleJobClick = (jobId: string) => {
+    router.push(`/learn?curriculum=${jobId}`)
   }
 
   return (
@@ -98,8 +104,9 @@ export default function ExplorePage() {
               {suggestedJobs.map((job, index) => (
                 <Card
                   key={job.id}
-                  className="glass-card border-0 hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 overflow-hidden group"
+                  className="glass-card border-0 hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 overflow-hidden group cursor-pointer"
                   style={{ animationDelay: `${index * 0.2}s` }}
+                  onClick={() => handleJobClick(job.id)}
                 >
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
@@ -122,9 +129,14 @@ export default function ExplorePage() {
                     </div>
 
                     <div className="pt-4 border-t border-white/10">
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
-                        <span className="text-xs text-muted-foreground">맞춤 추천</span>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
+                          <span className="text-xs text-muted-foreground">학습 커리큘럼 보기</span>
+                        </div>
+                        <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">
+                          클릭하여 시작 →
+                        </span>
                       </div>
                     </div>
                   </CardContent>

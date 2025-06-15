@@ -29,7 +29,28 @@ export interface LearningMission {
   duration: string
   type: "video" | "tutorial" | "article"
   link?: string
-  abilityRewards: { [abilityName: string]: number } // 새로 추가
+  abilityRewards: { [abilityName: string]: number }
+}
+
+// 새로 추가된 커리큘럼 관련 타입들
+export interface CurriculumStep {
+  id: string
+  title: string
+  description: string
+  missions: LearningMission[]
+  estimatedDuration: string
+  difficulty: "초급" | "중급" | "고급"
+  prerequisites?: string[]
+}
+
+export interface JobCurriculum {
+  jobId: string
+  jobTitle: string
+  description: string
+  totalDuration: string
+  difficulty: "초급" | "중급" | "고급"
+  steps: CurriculumStep[]
+  requiredAbilities: { [abilityName: string]: number }
 }
 
 export interface Resource {

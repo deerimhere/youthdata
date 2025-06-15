@@ -8,16 +8,22 @@ import type { JobSuggestion, Interest } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { Heart, ArrowRight, Sparkles, Target, Coffee } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function HomePage() {
   const [selectedInterest, setSelectedInterest] = useState<Interest | null>(null)
   const [suggestedJobs, setSuggestedJobs] = useState<JobSuggestion[]>([])
   const [showResults, setShowResults] = useState(false)
+  const router = useRouter()
 
   const handleInterestSelect = (interest: Interest) => {
     setSelectedInterest(interest)
     setSuggestedJobs(getJobSuggestionsByInterest(interest.id))
     setShowResults(true)
+  }
+
+  const handleJobClick = (jobId: string) => {
+    router.push(`/learn?curriculum=${jobId}`)
   }
 
   const resetSelection = () => {
@@ -94,7 +100,7 @@ export default function HomePage() {
                             gradients[index] + "/20 group-hover:" + gradients[index] + "/30",
                           )}
                         >
-                          <Icon className={cn("h-8 w-8 md:h-10 md:w-10 transition-all duration-300", interest.color)} />
+                          <Icon className={cn("h-8 w-8 md:h-10 md:w-10 transition-all duration-300", interest)} />
                         </div>
                         <span className="text-sm md:text-base font-semibold text-foreground">{interest.name}</span>
                       </div>
@@ -149,8 +155,9 @@ export default function HomePage() {
                 {suggestedJobs.map((job, index) => (
                   <Card
                     key={job.id}
-                    className="glass-card border-0 hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 overflow-hidden group"
+                    className="glass-card border-0 hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 overflow-hidden group cursor-pointer"
                     style={{ animationDelay: `${index * 0.2}s` }}
+                    onClick={() => handleJobClick(job.id)}
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-pink-500/5 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
@@ -176,10 +183,10 @@ export default function HomePage() {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center space-x-2">
                             <Sparkles className="h-4 w-4 text-yellow-400" />
-                            <span className="text-xs text-muted-foreground">당신에게 맞춤</span>
+                            <span className="text-xs text-muted-foreground">학습 커리큘럼 보기</span>
                           </div>
                           <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">
-                            더 알아보기 →
+                            클릭하여 시작 →
                           </span>
                         </div>
                       </div>
@@ -192,7 +199,12 @@ export default function HomePage() {
               <div className="space-y-6 max-w-3xl mx-auto">
                 <div className="glass-card rounded-2xl p-6 md:p-8 bg-gradient-to-r from-green-500/10 to-emerald-500/10">
                   <h3 className="text-xl md:text-2xl font-bold gradient-text mb-4">다음 단계는 어떨까요?</h3>
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <Link href="/survey">
+                      <Button className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                        관심 분야 찾기 🧭
+                      </Button>
+                    </Link>
                     <Link href="/learn">
                       <Button className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
                         학습으로 역량 키우기 📚

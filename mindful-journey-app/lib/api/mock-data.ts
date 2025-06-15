@@ -81,7 +81,7 @@ export const jobSuggestions: JobSuggestion[] = [
     id: "video_editor",
     title: "영상편집자",
     description: "혼자 작업하고, 디테일을 살리는 일에 익숙한 사람에게 좋아요.",
-    dailyRoutine: "영상 촬영본 검토 → 컷 편집 및 자막 작업 → 효과 및 색 보정 → 최종 검토 및 렌더링.",
+    dailyRoutine: "영상 촬영본 검토 → 컷 편집 및 자막 작업 → 효과 및 색 보정 �� 최종 검토 및 렌더링.",
     relatedInterest: "solo",
   },
   {

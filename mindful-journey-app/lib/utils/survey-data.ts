@@ -1,12 +1,12 @@
 import type { InitialQuestion, CategoryQuestion, JobMapping } from "@/lib/types/survey"
 
-// CSV 파싱 함수
-function parseCSV(csvText: string): any[] {
+// CSV 파싱 함수 - 타입을 명시적으로 지정
+function parseCSV(csvText: string): Record<string, string>[] {
   const lines = csvText.trim().split("\n")
   const headers = lines[0].split(",").map((h) => h.trim().replace(/"/g, ""))
 
   return lines.slice(1).map((line) => {
-    const values = []
+    const values: string[] = []
     let current = ""
     let inQuotes = false
 
@@ -23,7 +23,7 @@ function parseCSV(csvText: string): any[] {
     }
     values.push(current.trim())
 
-    const obj: any = {}
+    const obj: Record<string, string> = {}
     headers.forEach((header, index) => {
       obj[header] = values[index] || ""
     })
@@ -36,7 +36,12 @@ export async function loadInitialQuestions(): Promise<InitialQuestion[]> {
   try {
     const response = await fetch("/data/initial-questions.csv")
     const csvText = await response.text()
-    return parseCSV(csvText) as InitialQuestion[]
+    const rawData = parseCSV(csvText)
+    return rawData.map((row) => ({
+      QID: row.QID || "",
+      Question1: row.Question1 || "",
+      Category1: row.Category1 || "",
+    }))
   } catch (error) {
     console.error("Failed to load initial questions:", error)
     return []
@@ -47,7 +52,12 @@ export async function loadCategoryQuestions(): Promise<CategoryQuestion[]> {
   try {
     const response = await fetch("/data/category-questions.csv")
     const csvText = await response.text()
-    return parseCSV(csvText) as CategoryQuestion[]
+    const rawData = parseCSV(csvText)
+    return rawData.map((row) => ({
+      Category2: row.Category2 || "",
+      Category1: row.Category1 || "",
+      Question2: row.Question2 || "",
+    }))
   } catch (error) {
     console.error("Failed to load category questions:", error)
     return []
@@ -58,7 +68,12 @@ export async function loadJobMappings(): Promise<JobMapping[]> {
   try {
     const response = await fetch("/data/job-mapping.csv")
     const csvText = await response.text()
-    return parseCSV(csvText) as JobMapping[]
+    const rawData = parseCSV(csvText)
+    return rawData.map((row) => ({
+      Category1: row.Category1 || "",
+      Category2: row.Category2 || "",
+      KNOW직업명: row.KNOW직업명 || "",
+    }))
   } catch (error) {
     console.error("Failed to load job mappings:", error)
     return []
